@@ -39,6 +39,6 @@ app.innerHTML = `
       avatar="https://api.dicebear.com/9.x/miniavs/svg?seed=maya"
     ></social-post>
     <social-post>
-    <div>asd</div>
+    <div slot="content">Test content slot</div>
 </social-post>
 `;

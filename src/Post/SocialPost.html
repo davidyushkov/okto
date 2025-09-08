@@ -2,7 +2,7 @@
     <header class="post-header">
         <div class="post-user">
             <div class="avatar-wrapper">
-                <img id="avatar" class="avatar" src="https://api.dicebear.com/9.x/initials/svg?seed=Default">
+                <img id="avatar" class="avatar" src="https://api.dicebear.com/9.x/initials/svg?seed=Default" alt="avatar">
             </div>
             <div class="user-info">
                 <div id="display-name">Unknown user</div>
@@ -17,6 +17,9 @@
             <button id="like-button" class="like-button">0 ❤️</button>
         </div>
     </header>
-    <div id="content" class="content">No words</div>
+    <div id="content" class="content">
+        <slot name="content"></slot>
+        No words
+    </div>
     <button id="see-more-button" class="see-more">See more</button>
 </div>
