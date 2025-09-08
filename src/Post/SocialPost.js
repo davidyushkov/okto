@@ -23,10 +23,43 @@ class SocialPost extends HTMLElement {
         this.avatarElement = this.shadowRoot.getElementById('avatar');
         this.likeButton = this.shadowRoot.getElementById('like-button');
         this.seeMoreBtn = this.shadowRoot.getElementById("see-more-button");
+
+        this.increaseLikes = this.increaseLikes.bind(this);
+        this.toggleContent = this.toggleContent.bind(this);
     }
 
     static get observedAttributes() {
         return Object.values(Attributes);
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === Attributes.AVATAR) {
+            this.avatarElement.setAttribute('src', newValue);
+        } else if (name === Attributes.CONTENT) {
+            this.contentElement.textContent = newValue;
+            this.checkContentHeight();
+        } else if (this[`${toCamelCase(name)}Element`]) {
+            this[`${toCamelCase(name)}Element`].textContent = newValue;
+        }
+    }
+
+    connectedCallback() {
+        this.likeButton.addEventListener('click', this.increaseLikes);
+        this.seeMoreBtn.addEventListener("click", this.toggleContent);
+    }
+
+    disconnectedCallback() {
+        this.likeButton.removeEventListener('click', this.increaseLikes);
+        this.seeMoreBtn.removeEventListener("click", this.toggleContent);
+    }
+
+    increaseLikes() {
+        this.state.likes++;
+        this.likeButton.textContent = `${this.state.likes} ❤️`;
+        this.likeButton.classList.add("pulse");
+        this.likeButton.addEventListener("animationend", () => {
+            this.likeButton.classList.remove("pulse");
+        }, {once: true});
     }
 
     checkContentHeight() {
@@ -50,71 +83,17 @@ class SocialPost extends HTMLElement {
             this.seeMoreBtn.textContent = "See more";
         }
     }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (name === Attributes.AVATAR) {
-            this.avatarElement.setAttribute('src', newValue);
-        } else if (name === Attributes.CONTENT) {
-            this.contentElement.textContent = newValue;
-            this.checkContentHeight();
-        } else if (this[`${toCamelCase(name)}Element`]) {
-            this[`${toCamelCase(name)}Element`].textContent = newValue;
-        }
-    }
-
-    connectedCallback() {
-        this.likeButton.addEventListener('click', this.increaseLikes.bind(this));
-        this.seeMoreBtn.addEventListener("click", this.toggleContent.bind(this));
-    }
-
-    disconnectedCallback() {
-        this.likeButton.removeEventListener('click', this.increaseLikes.bind(this));
-        this.seeMoreBtn.removeEventListener("click", this.toggleContent.bind(this));
-    }
-
-    increaseLikes() {
-        this.state.likes++;
-        this.likeButton.textContent = `${this.state.likes} ❤️`;
-        this.likeButton.classList.add("pulse");
-        this.likeButton.addEventListener("animationend", () => {
-            this.likeButton.classList.remove("pulse");
-        }, {once: true});
-    }
-
-    set displayName(value) {
-        this.setAttribute("display-name", value);
-    }
-    get displayName() {
-        return this.getAttribute("display-name") || "Unknown User";
-    }
-
-    set username(value) {
-        this.setAttribute("username", value);
-    }
-    get username() {
-        return this.getAttribute("username");
-    }
-
-    set content(value) {
-        this.setAttribute("content", value);
-    }
-    get content() {
-        return this.getAttribute("content");
-    }
-
-    set avatar(value) {
-        this.setAttribute("avatar", value);
-    }
-    get avatar() {
-        return this.getAttribute("avatar");
-    }
-
-    set date(value) {
-        this.setAttribute("date", value);
-    }
-    get date() {
-        return this.getAttribute("date");
-    }
 }
+
+Object.values(Attributes).forEach(attr => {
+    Object.defineProperty(SocialPost.prototype, toCamelCase(attr), {
+        get() {
+            return this.getAttribute(attr);
+        },
+        set(value) {
+            this.setAttribute(attr, value);
+        }
+    });
+});
 
 export default SocialPost;

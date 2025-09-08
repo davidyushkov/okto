@@ -17,14 +17,16 @@ class ThemeToggle extends HTMLElement {
 
         this.toggleButton = this.shadowRoot.getElementById('toggle-button');
         this.setButtonText();
+
+        this.toggleTheme = this.toggleTheme.bind(this);
     }
 
     connectedCallback() {
-        this.toggleButton.addEventListener('click', this.toggleTheme.bind(this));
+        this.toggleButton.addEventListener('click', this.toggleTheme);
     }
 
     disconnectedCallback() {
-        this.toggleButton.removeEventListener('click', this.toggleTheme.bind(this));
+        this.toggleButton.removeEventListener('click', this.toggleTheme);
     }
 
     toggleTheme() {
