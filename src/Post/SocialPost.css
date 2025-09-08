@@ -1,0 +1,105 @@
+:host {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    min-width: 250px;
+    box-sizing: border-box;
+}
+
+.social-post {
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    min-width: 250px;
+    max-width: 400px;
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--text-color);
+
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        .post-user {
+            display: flex;
+            align-items: center;
+
+            .avatar-wrapper {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                box-shadow: 0px 0px 2px 1px var(--border-color);
+
+                .avatar {
+                    width: 100%;
+                    border-radius: 50%;
+                }
+            }
+
+            .user-info {
+                display: flex;
+                flex-direction: column;
+                margin-left: 10px;
+
+                .user-info-bottom {
+                    display: flex;
+                    color: var(--text-color-secondary);
+                    align-items: center;
+                    font-size: 14px;
+                    .separator {
+                        margin: 0 4px;
+                    }
+                }
+            }
+        }
+    }
+
+    .content {
+        font-size: 16px;
+        line-height: 1.5;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: calc(1.5rem * 3);
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+
+        &.expanded {
+            -webkit-line-clamp: unset;
+            max-height: 1000px;
+        }
+    }
+
+    .see-more {
+        margin-top: 8px;
+        background: transparent;
+        border: none;
+        color: var(--text-color-secondary);
+        cursor: pointer;
+        font-size: 14px;
+        display: none;
+        justify-self: end;
+    }
+
+    .like-button {
+        background: transparent;
+        color: var(--text-color-secondary);
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        transition: transform 0.25s ease-in-out;
+
+        &.pulse {
+            animation: pulse 0.25s ease-in-out;
+        }
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50%  {
+        transform: scale(1.3);
+    }
+}
