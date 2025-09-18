@@ -24,8 +24,7 @@ class SocialPost extends HTMLElement {
         this.likeButton = this.shadowRoot.getElementById('like-button');
         this.seeMoreBtn = this.shadowRoot.getElementById("see-more-button");
 
-        this.increaseLikes = this.increaseLikes.bind(this);
-        this.toggleContent = this.toggleContent.bind(this);
+        this.style.setProperty('--max-lines', CONTENT_MAX_LINES.toString());
     }
 
     static get observedAttributes() {
@@ -53,7 +52,7 @@ class SocialPost extends HTMLElement {
         this.seeMoreBtn.removeEventListener("click", this.toggleContent);
     }
 
-    increaseLikes() {
+    increaseLikes = () => {
         this.state.likes++;
         this.likeButton.textContent = `${this.state.likes} ❤️`;
         this.likeButton.classList.add("pulse");
@@ -73,7 +72,7 @@ class SocialPost extends HTMLElement {
         }
     }
 
-    toggleContent() {
+    toggleContent = () => {
         this.state.expanded = !this.state.expanded;
         if (this.state.expanded) {
             this.contentElement.classList.add("expanded");

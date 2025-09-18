@@ -18,18 +18,23 @@ class ThemeToggle extends HTMLElement {
         this.toggleButton = this.shadowRoot.getElementById('toggle-button');
         this.setButtonText();
 
-        this.toggleTheme = this.toggleTheme.bind(this);
+        this.observer = new MutationObserver(() => {
+            this.state.currentTheme = document.documentElement.getAttribute('data-theme') || THEMES.LIGHT;
+            this.setButtonText();
+        });
     }
 
     connectedCallback() {
         this.toggleButton.addEventListener('click', this.toggleTheme);
+        this.observer.observe(document.documentElement, {attributes: true, attributeFilter: ['data-theme']});
     }
 
     disconnectedCallback() {
         this.toggleButton.removeEventListener('click', this.toggleTheme);
+        this.observer.disconnect();
     }
 
-    toggleTheme() {
+    toggleTheme = () => {
         this.state.currentTheme = this.state.currentTheme === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK;
         document.documentElement.setAttribute('data-theme', this.state.currentTheme);
         this.setButtonText();

@@ -4,6 +4,7 @@
     max-width: 400px;
     min-width: 250px;
     box-sizing: border-box;
+    --max-lines: 3;
 }
 
 .social-post {
@@ -28,7 +29,7 @@
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
-                box-shadow: 0px 0px 2px 1px var(--border-color);
+                box-shadow: 0 0 2px 1px var(--border-color);
 
                 .avatar {
                     width: 100%;
@@ -59,10 +60,10 @@
         line-height: 1.5;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-height: calc(1.5rem * 3);
+        max-height: calc(1.5rem * var(--max-lines));
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: var(--max-lines);
 
         &.expanded {
             -webkit-line-clamp: unset;
